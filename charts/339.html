@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chart 339 - ArgMining Supplementary</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<nav class="breadcrumb">
+  <a href="../index.html">Home</a> &rsaquo;
+  <a href="../gallery.html">Gallery</a> &rsaquo;
+  <span>Chart 339</span>
+</nav>
+
+<header class="chart-header">
+  <div class="chart-nav">
+    <a id="prev-link" href="#">&larr; Previous</a>
+    <h1>Chart 339</h1>
+    <a id="next-link" href="#">Next &rarr;</a>
+  </div>
+  <div class="chart-badges">
+    <span class="badge badge-domain" id="badge-domain"></span>
+    <span class="badge badge-type" id="badge-type"></span>
+    <span class="badge badge-mag" id="badge-mag"></span>
+    <span class="badge badge-tier" id="badge-tier"></span>
+  </div>
+</header>
+
+<main class="chart-detail">
+  <div class="chart-image-col">
+    <div class="chart-image-wrap">
+      <img id="chart-img" src="../images/339.png" alt="Chart 339" onclick="openLightbox(this)">
+      <div class="click-hint">Click to enlarge</div>
+    </div>
+    <div class="caption-box" id="caption-box"></div>
+    <div class="citation-box" id="citation-box"></div>
+  </div>
+
+  <div class="chart-info-col">
+    <section class="info-section">
+      <h2>Claim</h2>
+      <p id="claim-text" class="claim-text"></p>
+    </section>
+
+    <section class="info-section">
+      <h2>Warrant</h2>
+      <div class="warrant-meta">
+        <span class="label">Type:</span> <span id="warrant-type"></span>
+      </div>
+      <p id="warrant-desc"></p>
+    </section>
+
+    <section class="info-section">
+      <h2>Backing &amp; Qualifier</h2>
+      <p><strong>Backing:</strong> <span id="backing-text"></span></p>
+      <p><strong>Qualifier:</strong> <span id="qualifier-text"></span></p>
+    </section>
+  </div>
+</main>
+
+<section class="l1l4-section">
+  <h2>L1&ndash;L4 Evidence Decomposition</h2>
+  <div class="l1l4-grid">
+    <div class="l-card"><h3>L1: Chart Structure</h3><p id="l1-text"></p></div>
+    <div class="l-card"><h3>L2: Statistical Patterns</h3><p id="l2-text"></p></div>
+    <div class="l-card"><h3>L3: Perceptual Salience</h3><p id="l3-text"></p></div>
+    <div class="l-card"><h3>L4: Semantic Patterns</h3><p id="l4-text"></p></div>
+  </div>
+</section>
+
+<section class="scores-section">
+  <h2>Quality Assessment</h2>
+  <div class="scores-summary">
+    <div class="qg-big" id="qg-score"></div>
+    <div class="rank-info">Rank <span id="rank-num"></span> / 30</div>
+  </div>
+  <div class="score-bars" id="score-bars"></div>
+  <div class="score-analysis">
+    <p><strong>Key Driver:</strong> <span id="key-driver"></span></p>
+    <p><strong>Strengths:</strong> <span id="strengths"></span></p>
+    <p><strong>Weaknesses:</strong> <span id="weaknesses"></span></p>
+  </div>
+</section>
+
+<section class="claims-section">
+  <h2>Sample Claims from Corpus (<span id="total-claims"></span> total)</h2>
+  <div id="claims-list" class="claims-list"></div>
+</section>
+
+<div id="lightbox" class="lightbox" onclick="closeLightbox()">
+  <img id="lightbox-img" src="">
+</div>
+
+<script>const CHART_ID = 339;</script>
+<script src="../js/data.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>

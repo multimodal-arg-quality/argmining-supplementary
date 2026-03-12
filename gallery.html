@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chart Gallery — ArgMining Supplementary</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<nav class="breadcrumb">
+  <a href="index.html">Home</a> &rsaquo;
+  <span>Chart Gallery</span>
+</nav>
+
+<header class="chart-header">
+  <h1>Chart Gallery</h1>
+  <p style="color:var(--text-light); margin-top:8px;">All 30 argumentative visualizations from our corpus. Use filters to narrow by domain, argument structure, or quality tier.</p>
+</header>
+
+<div class="filter-bar">
+  <div class="filter-group">
+    <label>Domain:</label>
+    <button class="filter-btn active" data-filter="domain" data-value="all">All</button>
+    <button class="filter-btn" data-filter="domain" data-value="Climate">Climate</button>
+    <button class="filter-btn" data-filter="domain" data-value="Energy">Energy</button>
+    <button class="filter-btn" data-filter="domain" data-value="Healthcare">Health</button>
+  </div>
+  <div class="filter-group">
+    <label>MAG:</label>
+    <button class="filter-btn active" data-filter="mag" data-value="all">All</button>
+    <button class="filter-btn" data-filter="mag" data-value="SC-SE">SC-SE</button>
+    <button class="filter-btn" data-filter="mag" data-value="SC-CE">SC-CE</button>
+    <button class="filter-btn" data-filter="mag" data-value="SC-CompE">SC-CompE</button>
+    <button class="filter-btn" data-filter="mag" data-value="MC-ME">MC-ME</button>
+  </div>
+  <div class="filter-group">
+    <label>Tier:</label>
+    <button class="filter-btn active" data-filter="tier" data-value="all">All</button>
+    <button class="filter-btn" data-filter="tier" data-value="Top">Top</button>
+    <button class="filter-btn" data-filter="tier" data-value="Mid">Mid</button>
+    <button class="filter-btn" data-filter="tier" data-value="Bottom">Bottom</button>
+  </div>
+  <div class="filter-group">
+    <label>Sort:</label>
+    <select id="sort-select" style="font-size:0.85rem; padding:4px 8px; border:1px solid var(--border); border-radius:4px;">
+      <option value="rank">Rank (best first)</option>
+      <option value="rank-desc">Rank (worst first)</option>
+      <option value="id">Chart ID</option>
+      <option value="domain">Domain</option>
+    </select>
+  </div>
+</div>
+
+<div class="stats-grid" style="margin-bottom:8px;">
+  <div class="stat-box"><div class="stat-num" id="showing-count">30</div><div class="stat-label">Charts Shown</div></div>
+</div>
+
+<div class="card-grid" id="card-grid"></div>
+
+<script src="js/data.js"></script>
+<script>
+(function() {
+  const grid = document.getElementById('card-grid');
+  const filters = { domain: 'all', mag: 'all', tier: 'all' };
+  let sortBy = 'rank';
+
+  function matchDomain(chart, filter) {
+    if (filter === 'all') return true;
+    if (filter === 'Healthcare') return chart.domain === 'Healthcare' || chart.domain === 'Health';
+    return chart.domain === filter;
+  }
+
+  function renderCards() {
+    grid.innerHTML = '';
+    let items = Object.values(CHARTS);
+
+    // Filter
+    items = items.filter(c => {
+      if (!matchDomain(c, filters.domain)) return false;
+      if (filters.mag !== 'all' && c.mag !== filters.mag) return false;
+      if (filters.tier !== 'all' && c.tier !== filters.tier) return false;
+      return true;
+    });
+
+    // Sort
+    if (sortBy === 'rank') items.sort((a,b) => a.rank - b.rank);
+    else if (sortBy === 'rank-desc') items.sort((a,b) => b.rank - a.rank);
+    else if (sortBy === 'id') items.sort((a,b) => a.id - b.id);
+    else if (sortBy === 'domain') items.sort((a,b) => a.domain.localeCompare(b.domain) || a.rank - b.rank);
+
+    document.getElementById('showing-count').textContent = items.length;
+
+    items.forEach(c => {
+      const card = document.createElement('a');
+      card.className = 'chart-card';
+      card.href = `charts/${c.id}.html`;
+      card.style.textDecoration = 'none';
+      card.style.color = 'inherit';
+      card.innerHTML = `
+        <img src="images/${c.id}.png" alt="Chart ${c.id}" loading="lazy">
+        <div class="chart-card-body">
+          <h3>Chart ${c.id}</h3>
+          <div class="chart-card-meta">
+            <span class="badge badge-domain">${c.domain}</span>
+            <span class="badge badge-type">${c.chartType}</span>
+            <span class="badge badge-mag">${c.mag}</span>
+          </div>
+          <p style="font-size:0.85rem; color:var(--text-light); margin-bottom:8px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">${c.claim}</p>
+          <div class="chart-card-score">
+            <span class="badge badge-tier-${c.tier}">${c.tier}</span>
+            <span class="qg">Q(G) = ${c.scores.qG.toFixed(2)}</span>
+          </div>
+          <div class="tier-bar tier-bar-${c.tier}"></div>
+        </div>`;
+      grid.appendChild(card);
+    });
+  }
+
+  // Filter buttons
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const group = btn.dataset.filter;
+      const value = btn.dataset.value;
+      filters[group] = value;
+      // Update active state within group
+      document.querySelectorAll(`.filter-btn[data-filter="${group}"]`).forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderCards();
+    });
+  });
+
+  // Sort select
+  document.getElementById('sort-select').addEventListener('change', e => {
+    sortBy = e.target.value;
+    renderCards();
+  });
+
+  renderCards();
+})();
+</script>
+</body>
+</html>

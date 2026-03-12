@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quality Rankings — ArgMining Supplementary</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<nav class="breadcrumb">
+  <a href="index.html">Home</a> &rsaquo;
+  <span>Quality Rankings</span>
+</nav>
+
+<header class="chart-header">
+  <h1>Quality Rankings</h1>
+  <p style="color:var(--text-light); margin-top:8px;">All 30 charts ranked by composite quality score Q(G). Click column headers to sort.</p>
+</header>
+
+<section>
+  <h2>Score Distribution</h2>
+  <div class="tier-dist" id="tier-summary"></div>
+  <div id="score-stats" style="font-family:'Helvetica Neue',Arial,sans-serif; font-size:0.85rem; color:var(--text-light); margin:12px 0;"></div>
+</section>
+
+<section>
+  <h2>Full Rankings</h2>
+  <table id="rankings-table">
+    <thead>
+      <tr>
+        <th data-col="rank" data-type="num">Rank <span class="sort-arrow"></span></th>
+        <th data-col="id" data-type="num">Chart <span class="sort-arrow"></span></th>
+        <th data-col="domain" data-type="str">Domain <span class="sort-arrow"></span></th>
+        <th data-col="mag" data-type="str">MAG <span class="sort-arrow"></span></th>
+        <th data-col="chartType" data-type="str">Type <span class="sort-arrow"></span></th>
+        <th data-col="comp" data-type="num" class="num">Comp <span class="sort-arrow"></span></th>
+        <th data-col="align" data-type="num" class="num">Align <span class="sort-arrow"></span></th>
+        <th data-col="wStr" data-type="num" class="num">WStr <span class="sort-arrow"></span></th>
+        <th data-col="sRel" data-type="num" class="num">SRel <span class="sort-arrow"></span></th>
+        <th data-col="cBudget" data-type="num" class="num">CBudget <span class="sort-arrow"></span></th>
+        <th data-col="qG" data-type="num" class="num">Q(G) <span class="sort-arrow"></span></th>
+        <th data-col="tier" data-type="str">Tier <span class="sort-arrow"></span></th>
+      </tr>
+    </thead>
+    <tbody id="rankings-body"></tbody>
+  </table>
+</section>
+
+<script src="js/data.js"></script>
+<script>
+(function() {
+  const tbody = document.getElementById('rankings-body');
+  let data = Object.values(CHARTS).sort((a,b) => a.rank - b.rank);
+  let currentSort = 'rank';
+  let currentDir = 'asc';
+
+  // Tier summary
+  const tiers = { Top: 0, Mid: 0, Bottom: 0 };
+  const qValues = [];
+  data.forEach(c => { tiers[c.tier]++; qValues.push(c.scores.qG); });
+  const tierEl = document.getElementById('tier-summary');
+  const tierColors = { Top: 'var(--tier-top)', Mid: 'var(--tier-mid)', Bottom: 'var(--tier-bot)' };
+  const tierBg = { Top: 'var(--tier-top-bg)', Mid: 'var(--tier-mid-bg)', Bottom: 'var(--tier-bot-bg)' };
+  ['Top','Mid','Bottom'].forEach(t => {
+    tierEl.innerHTML += `<div class="tier-dist-item" style="background:${tierBg[t]}; border:1px solid ${tierColors[t]}">
+      <div class="tier-dist-num" style="color:${tierColors[t]}">${tiers[t]}</div><div class="tier-dist-label">${t} Tier</div></div>`;
+  });
+
+  // Stats
+  const mean = (qValues.reduce((s,v) => s+v, 0) / qValues.length).toFixed(2);
+  const sorted = [...qValues].sort((a,b) => a-b);
+  const median = sorted.length % 2 === 0 ? ((sorted[sorted.length/2-1] + sorted[sorted.length/2]) / 2).toFixed(2) : sorted[Math.floor(sorted.length/2)].toFixed(2);
+  const min = Math.min(...qValues).toFixed(2);
+  const max = Math.max(...qValues).toFixed(2);
+  document.getElementById('score-stats').innerHTML =
+    `Mean: <strong>${mean}</strong> &middot; Median: <strong>${median}</strong> &middot; Range: <strong>${min}&ndash;${max}</strong>`;
+
+  function renderTable() {
+    tbody.innerHTML = '';
+    data.forEach(c => {
+      const tr = document.createElement('tr');
+      tr.style.cursor = 'pointer';
+      tr.onclick = () => window.location.href = `charts/${c.id}.html`;
+      tr.innerHTML = `
+        <td class="num">${c.rank}</td>
+        <td class="num"><a href="charts/${c.id}.html">${c.id}</a></td>
+        <td>${c.domain}</td>
+        <td>${c.mag}</td>
+        <td>${c.chartType}</td>
+        <td class="num">${c.scores.comp.toFixed(1)}</td>
+        <td class="num">${c.scores.align.toFixed(1)}</td>
+        <td class="num">${c.scores.wStr.toFixed(1)}</td>
+        <td class="num">${c.scores.sRel.toFixed(1)}</td>
+        <td class="num">${c.scores.cBudget.toFixed(1)}</td>
+        <td class="num" style="font-weight:700;">${c.scores.qG.toFixed(2)}</td>
+        <td><span class="badge badge-tier-${c.tier}">${c.tier}</span></td>`;
+      tbody.appendChild(tr);
+    });
+  }
+
+  // Sortable headers
+  document.querySelectorAll('#rankings-table thead th').forEach(th => {
+    th.addEventListener('click', () => {
+      const col = th.dataset.col;
+      const type = th.dataset.type;
+      if (!col) return;
+
+      if (currentSort === col) {
+        currentDir = currentDir === 'asc' ? 'desc' : 'asc';
+      } else {
+        currentSort = col;
+        currentDir = 'asc';
+      }
+
+      data.sort((a,b) => {
+        let va, vb;
+        if (['comp','align','wStr','sRel','cBudget','qG'].includes(col)) {
+          va = a.scores[col]; vb = b.scores[col];
+        } else {
+          va = a[col]; vb = b[col];
+        }
+        if (type === 'num') {
+          return currentDir === 'asc' ? va - vb : vb - va;
+        } else {
+          return currentDir === 'asc' ? String(va).localeCompare(String(vb)) : String(vb).localeCompare(String(va));
+        }
+      });
+
+      // Update arrows
+      document.querySelectorAll('#rankings-table .sort-arrow').forEach(a => a.textContent = '');
+      th.querySelector('.sort-arrow').textContent = currentDir === 'asc' ? ' ▲' : ' ▼';
+
+      renderTable();
+    });
+  });
+
+  // Initial sort arrow
+  document.querySelector('th[data-col="rank"] .sort-arrow').textContent = ' ▲';
+  renderTable();
+})();
+</script>
+</body>
+</html>

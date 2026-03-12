@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Argument Structures — ArgMining Supplementary</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<nav class="breadcrumb">
+  <a href="index.html">Home</a> &rsaquo;
+  <span>Argument Structures</span>
+</nav>
+
+<header class="chart-header">
+  <h1>Charts by Argument Structure</h1>
+  <p style="color:var(--text-light); margin-top:8px;">Charts organized by their Multimodal Argument Graph (MAG) template. Each template describes the structural relationship between claims and evidence.</p>
+</header>
+
+<nav style="margin:20px 0; font-family:'Helvetica Neue',Arial,sans-serif; font-size:0.9rem;">
+  <strong>Jump to:</strong>
+  <a href="#sc-se">SC-SE</a> &middot;
+  <a href="#sc-ce">SC-CE</a> &middot;
+  <a href="#sc-compe">SC-CompE</a> &middot;
+  <a href="#mc-me">MC-ME</a>
+</nav>
+
+<section class="structure-section" id="sc-se">
+  <h2>SC-SE: Single Claim &ndash; Single Evidence</h2>
+  <p class="structure-desc">The simplest argumentative structure. One claim is supported by one piece of visual evidence through a single warrant. These charts typically make a focused, specific point.</p>
+  <div class="structure-stats" id="sc-se-stats"></div>
+  <div class="card-grid" id="sc-se-grid"></div>
+</section>
+
+<section class="structure-section" id="sc-ce">
+  <h2>SC-CE: Single Claim &ndash; Contrastive Evidence</h2>
+  <p class="structure-desc">A single claim is supported by evidence that relies on contrast or comparison between categories, time periods, or conditions. The warrant involves comparing visual elements to establish the claim.</p>
+  <div class="structure-stats" id="sc-ce-stats"></div>
+  <div class="card-grid" id="sc-ce-grid"></div>
+</section>
+
+<section class="structure-section" id="sc-compe">
+  <h2>SC-CompE: Single Claim &ndash; Complementary Evidence</h2>
+  <p class="structure-desc">A single claim is supported by multiple complementary pieces of evidence that together build the argument. Often involves multi-panel charts where different panels contribute different aspects of the evidence.</p>
+  <div class="structure-stats" id="sc-compe-stats"></div>
+  <div class="card-grid" id="sc-compe-grid"></div>
+</section>
+
+<section class="structure-section" id="mc-me">
+  <h2>MC-ME: Multiple Claims &ndash; Multiple Evidence</h2>
+  <p class="structure-desc">Complex argumentative structures where multiple claims are supported by multiple evidence streams. These charts encode rich, layered arguments often involving causal chains or synthesis across data dimensions.</p>
+  <div class="structure-stats" id="mc-me-stats"></div>
+  <div class="card-grid" id="mc-me-grid"></div>
+</section>
+
+<script src="js/data.js"></script>
+<script>
+(function() {
+  const magMap = {
+    'SC-SE': { grid: 'sc-se-grid', stats: 'sc-se-stats' },
+    'SC-CE': { grid: 'sc-ce-grid', stats: 'sc-ce-stats' },
+    'SC-CompE': { grid: 'sc-compe-grid', stats: 'sc-compe-stats' },
+    'MC-ME': { grid: 'mc-me-grid', stats: 'mc-me-stats' }
+  };
+
+  Object.entries(magMap).forEach(([mag, els]) => {
+    const items = Object.values(CHARTS).filter(c => c.mag === mag).sort((a,b) => a.rank - b.rank);
+    const grid = document.getElementById(els.grid);
+    const statsEl = document.getElementById(els.stats);
+
+    // Stats
+    const avgQ = items.length ? (items.reduce((s,c) => s + c.scores.qG, 0) / items.length).toFixed(2) : '—';
+    const tiers = { Top: 0, Mid: 0, Bottom: 0 };
+    items.forEach(c => tiers[c.tier]++);
+    statsEl.innerHTML = `
+      <span><strong>${items.length}</strong> charts</span>
+      <span>Avg Q(G): <strong>${avgQ}</strong></span>
+      <span>Top: ${tiers.Top} &middot; Mid: ${tiers.Mid} &middot; Bottom: ${tiers.Bottom}</span>`;
+
+    // Cards
+    items.forEach(c => {
+      const card = document.createElement('a');
+      card.className = 'chart-card';
+      card.href = `charts/${c.id}.html`;
+      card.style.textDecoration = 'none';
+      card.style.color = 'inherit';
+      card.innerHTML = `
+        <img src="images/${c.id}.png" alt="Chart ${c.id}" loading="lazy">
+        <div class="chart-card-body">
+          <h3>Chart ${c.id}</h3>
+          <div class="chart-card-meta">
+            <span class="badge badge-domain">${c.domain}</span>
+            <span class="badge badge-type">${c.chartType}</span>
+          </div>
+          <p style="font-size:0.85rem; color:var(--text-light); margin-bottom:8px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">${c.claim}</p>
+          <div class="chart-card-score">
+            <span class="badge badge-tier-${c.tier}">${c.tier}</span>
+            <span class="qg">Q(G) = ${c.scores.qG.toFixed(2)}</span>
+          </div>
+          <div class="tier-bar tier-bar-${c.tier}"></div>
+        </div>`;
+      grid.appendChild(card);
+    });
+  });
+})();
+</script>
+</body>
+</html>
