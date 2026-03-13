@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chart 1153 - ArgMining Supplementary</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<nav class="breadcrumb">
+  <a href="../index.html">Home</a> &rsaquo;
+  <a href="../gallery.html">Gallery</a> &rsaquo;
+  <span>Chart 1153</span>
+</nav>
+
+<header class="chart-header">
+  <div class="chart-nav">
+    <a id="prev-link" href="#">&larr; Previous</a>
+    <h1>Chart 1153</h1>
+    <a id="next-link" href="#">Next &rarr;</a>
+  </div>
+  <div class="chart-badges">
+    <span class="badge badge-domain" id="badge-domain"></span>
+    <span class="badge badge-type" id="badge-type"></span>
+    <span class="badge badge-tier" id="badge-tier"></span>
+  </div>
+</header>
+
+<main class="chart-detail">
+  <div class="chart-image-col">
+    <div class="chart-image-wrap">
+      <img id="chart-img" src="../images/1153.png" alt="Chart 1153" onclick="openLightbox(this)">
+      <div class="click-hint">Click to enlarge</div>
+    </div>
+    <div class="caption-box" id="caption-box"></div>
+    <div class="citation-box" id="citation-box"></div>
+  </div>
+
+  <div class="chart-info-col">
+    <section class="info-section">
+      <h2>Claim</h2>
+      <p id="claim-text" class="claim-text"></p>
+    </section>
+  </div>
+</main>
+
+<section class="scores-section">
+  <h2>Quality Assessment</h2>
+  <div class="scores-summary">
+    <div class="qg-big" id="qg-score"></div>
+    <div class="rank-info">Rank <span id="rank-num"></span> / 182</div>
+  </div>
+  <div class="score-bars" id="score-bars"></div>
+</section>
+
+<section class="claims-section">
+  <h2>Sample Claims from Corpus (<span id="total-claims"></span> total)</h2>
+  <div id="claims-list" class="claims-list"></div>
+</section>
+
+<div id="lightbox" class="lightbox" onclick="closeLightbox()">
+  <img id="lightbox-img" src="">
+</div>
+
+<script>const CHART_ID = 1153;</script>
+<script src="../js/data.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>
