@@ -381,7 +381,7 @@ tfoot { border-top: 2px solid var(--heading); }
   font-family: 'Helvetica Neue', Arial, sans-serif;
   font-size: 0.85rem;
 }
-.score-bar-label { width: 110px; text-align: right; color: var(--text-light); }
+.score-bar-label { width: 200px; text-align: right; color: var(--text-light); white-space: nowrap; }
 .score-bar-track {
   flex: 1;
   height: 20px;

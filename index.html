@@ -3,34 +3,31 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Supplementary Material — Claim in the Caption, Evidence in the Chart</title>
+<title>Supplementary Material — Do you see what I mean?</title>
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
 <header class="site-header">
   <h1>Supplementary Material</h1>
-  <p class="subtitle">Claim in the Caption, Evidence in the Chart: Semantic Convergence as a Framework for Multimodal Argument Quality</p>
+  <p class="subtitle">Do you see what I mean? Assessing Multimodal Argumentation Quality in Scientific Charts</p>
 </header>
 
 <section>
-  <p>This companion site presents the complete corpus of <strong>30 argumentative visualizations</strong> analyzed in our paper, with full Toulmin decompositions, L1&ndash;L4 evidence hierarchies, quality scores, and sample generated claims. All charts are drawn from IPCC Assessment Reports and span three scientific domains.</p>
+  <p>This companion site presents the complete corpus of <strong>50 argumentative visualizations</strong> analyzed in our paper, with quality scores grounded in the L1&ndash;L4 semantic content hierarchy, and sample generated claims. All charts are drawn from IPCC assessment reports, national climate assessments, and energy technology reviews across two scientific domains.</p>
 </section>
 
 <section>
   <h2>Corpus Overview</h2>
   <div class="stats-grid" id="stats-grid">
-    <div class="stat-box"><div class="stat-num">30</div><div class="stat-label">Charts Analyzed</div></div>
-    <div class="stat-box"><div class="stat-num" id="stat-claims">—</div><div class="stat-label">Generated Claims</div></div>
-    <div class="stat-box"><div class="stat-num">3</div><div class="stat-label">Domains</div></div>
-    <div class="stat-box"><div class="stat-num">4</div><div class="stat-label">MAG Templates</div></div>
+    <div class="stat-box"><div class="stat-num">50</div><div class="stat-label">Charts Analyzed</div></div>
+    <div class="stat-box"><div class="stat-num" id="stat-claims">&mdash;</div><div class="stat-label">Generated Claims</div></div>
+    <div class="stat-box"><div class="stat-num">2</div><div class="stat-label">Domains</div></div>
+    <div class="stat-box"><div class="stat-num">3</div><div class="stat-label">Quality Dimensions</div></div>
   </div>
 
   <h3>Domain Distribution</h3>
   <div class="tier-dist" id="domain-dist"></div>
-
-  <h3>MAG Structure Distribution</h3>
-  <div class="tier-dist" id="mag-dist"></div>
 
   <h3>Quality Tier Distribution</h3>
   <div class="tier-dist" id="tier-dist"></div>
@@ -41,19 +38,15 @@
   <div class="nav-cards">
     <a class="nav-card" href="gallery.html">
       <h3>&#128444; Chart Gallery</h3>
-      <p>Browse all 30 charts with filterable card grid. Filter by domain, argument structure, or quality tier.</p>
-    </a>
-    <a class="nav-card" href="structures.html">
-      <h3>&#128202; Argument Structures</h3>
-      <p>Charts grouped by Multimodal Argument Graph template: SC-SE, SC-CE, SC-CompE, MC-ME.</p>
+      <p>Browse all 50 charts with filterable card grid. Filter by domain or quality tier.</p>
     </a>
     <a class="nav-card" href="rankings.html">
       <h3>&#127942; Quality Rankings</h3>
-      <p>Sortable table of all quality scores across five dimensions with composite Q(G).</p>
+      <p>Sortable table of all quality scores across three dimensions with composite Q.</p>
     </a>
     <a class="nav-card" href="rubric.html">
       <h3>&#128209; Scoring Rubric</h3>
-      <p>Full 5-dimension rubric (Comp, Align, WStr, SRel, CBudget) with scoring criteria and composite formula.</p>
+      <p>Three-dimension rubric (Align, WStr, SRel) grounded in the L1&ndash;L4 hierarchy.</p>
     </a>
   </div>
 </section>
@@ -65,11 +58,13 @@
       <tr><th>Term</th><th>Definition</th></tr>
     </thead>
     <tbody>
-      <tr><td><strong>MAG</strong></td><td>Multimodal Argument Graph &mdash; graph-based representation with claim, evidence, and backing nodes connected by warrant, complementarity, and support edges.</td></tr>
-      <tr><td><strong>L1&ndash;L4</strong></td><td>Four-level semantic content model (after Lundgard &amp; Satyanarayan, 2021): L1&nbsp;=&nbsp;chart structure, L2&nbsp;=&nbsp;statistical patterns, L3&nbsp;=&nbsp;perceptual salience, L4&nbsp;=&nbsp;semantic patterns.</td></tr>
-      <tr><td><strong>Toulmin Model</strong></td><td>Extended framework: Claim (text), Evidence (visual), Warrant (cross-modal reasoning), Backing (authoritative source), Qualifier (scope/certainty), Rebuttal.</td></tr>
-      <tr><td><strong>Q(G)</strong></td><td>Composite quality score: Q(G) = Comp<sub>gate</sub> &times; [0.20&times;Align + 0.30&times;WStr + 0.30&times;SRel + 0.20&times;CBudget] / 5</td></tr>
-      <tr><td><strong>Tiers</strong></td><td>Top (Q &ge; 3.5), Mid (2.5 &le; Q &lt; 3.5), Bottom (Q &lt; 2.5)</td></tr>
+      <tr><td><strong>L1&ndash;L4</strong></td><td>Four-level semantic content model (after Lundgard &amp; Satyanarayan, 2021): L1&nbsp;=&nbsp;chart structure, L2&nbsp;=&nbsp;statistical patterns, L3&nbsp;=&nbsp;perceptual salience, L4&nbsp;=&nbsp;semantic meaning.</td></tr>
+      <tr><td><strong>Align</strong></td><td>Claim&ndash;evidence alignment: do L2 patterns directly depict the L4 claim? (1&ndash;5)</td></tr>
+      <tr><td><strong>WStr</strong></td><td>Warrant strength: is the L1&rarr;L2&rarr;L3&rarr;L4 reasoning chain coherent and recoverable? (1&ndash;5)</td></tr>
+      <tr><td><strong>SRel</strong></td><td>Salience&ndash;relevance match: do L3 salient features serve the L4 argument? (1&ndash;5)</td></tr>
+      <tr><td><strong>Q</strong></td><td>Composite quality: Q = (Align + WStr + SRel) / 3</td></tr>
+      <tr><td><strong>Tiers</strong></td><td>Top (Q &ge; 4.0), Mid (3.0 &le; Q &lt; 4.0), Bottom (Q &lt; 3.0)</td></tr>
+      <tr><td><strong>Semantic Convergence</strong></td><td>The degree to which a reader recovers the argument the designer intended, measured across claim (SC<sub>1</sub>), evidence (SC<sub>2</sub>), and warrant (SC<sub>3</sub>) levels.</td></tr>
     </tbody>
   </table>
 </section>
@@ -77,38 +72,24 @@
 <script src="js/data.js"></script>
 <script>
 (function() {
-  // Compute stats from CHARTS
   const ids = Object.keys(CHARTS);
   let totalClaims = 0;
-  const domains = {}, mags = {}, tiers = {};
+  const domains = {}, tiers = {};
   ids.forEach(id => {
     const c = CHARTS[id];
     totalClaims += c.totalClaims || 0;
     domains[c.domain] = (domains[c.domain] || 0) + 1;
-    mags[c.mag] = (mags[c.mag] || 0) + 1;
     tiers[c.tier] = (tiers[c.tier] || 0) + 1;
   });
   document.getElementById('stat-claims').textContent = totalClaims.toLocaleString();
 
-  // Domain distribution
-  const domainColors = { Climate: '#0ea5e9', Energy: '#f59e0b', Healthcare: '#10b981', Health: '#10b981' };
+  const domainColors = { Climate: '#0ea5e9', Energy: '#f59e0b' };
   const domainEl = document.getElementById('domain-dist');
   Object.entries(domains).sort((a,b) => b[1]-a[1]).forEach(([k,v]) => {
     domainEl.innerHTML += `<div class="tier-dist-item" style="background:${domainColors[k] || '#e5e7eb'}20; border:1px solid ${domainColors[k] || '#e5e7eb'}">
       <div class="tier-dist-num" style="color:${domainColors[k]}">${v}</div><div class="tier-dist-label">${k}</div></div>`;
   });
 
-  // MAG distribution
-  const magOrder = ['SC-SE','SC-CE','SC-CompE','MC-ME'];
-  const magEl = document.getElementById('mag-dist');
-  magOrder.forEach(m => {
-    if (mags[m]) {
-      magEl.innerHTML += `<div class="tier-dist-item" style="background:var(--accent-light); border:1px solid var(--accent)">
-        <div class="tier-dist-num" style="color:var(--accent)">${mags[m]}</div><div class="tier-dist-label">${m}</div></div>`;
-    }
-  });
-
-  // Tier distribution
   const tierColors = { Top: 'var(--tier-top)', Mid: 'var(--tier-mid)', Bottom: 'var(--tier-bot)' };
   const tierBg = { Top: 'var(--tier-top-bg)', Mid: 'var(--tier-mid-bg)', Bottom: 'var(--tier-bot-bg)' };
   const tierEl = document.getElementById('tier-dist');

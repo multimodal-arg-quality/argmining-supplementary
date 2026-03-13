@@ -14,33 +14,66 @@
 
 <header class="chart-header">
   <h1>Quality Scoring Rubric</h1>
-  <p style="color:var(--text-light); margin-top:8px;">Five dimensions assess how effectively a visualization's design supports its argumentative function. Each chart receives a score of 1&ndash;5 on every dimension.</p>
+  <p style="color:var(--text-light); margin-top:8px;">Three dimensions assess how effectively a visualization&rsquo;s design supports its argumentative function, grounded in the L1&ndash;L4 semantic content hierarchy. Each chart receives a score of 1&ndash;5 on every dimension.</p>
 </header>
+
+<section class="structure-section">
+  <h2>L1&ndash;L4 Semantic Content Foundation</h2>
+  <p style="font-size:0.9rem; color:var(--text-light); margin-bottom:14px;">
+    Following Lundgard &amp; Satyanarayan (2021), we characterize each chart&rsquo;s visual evidence at four semantic levels. Our three scoring dimensions then measure specific alignments within this hierarchy.
+  </p>
+  <table>
+    <thead>
+      <tr><th>Level</th><th>Content</th><th>Example</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>L1</strong></td>
+        <td>Chart structure &amp; encodings</td>
+        <td>Grouped bar chart; x-axis = forcing agent, y-axis = W/m&sup2;</td>
+      </tr>
+      <tr>
+        <td><strong>L2</strong></td>
+        <td>Statistical &amp; relational patterns</td>
+        <td>CO&sub2; bar is tallest positive; aerosol bar is tallest negative</td>
+      </tr>
+      <tr>
+        <td><strong>L3</strong></td>
+        <td>Perceptual salience</td>
+        <td>Color-coded bars make CO&sub2; dominance immediately visible</td>
+      </tr>
+      <tr>
+        <td><strong>L4</strong></td>
+        <td>High-level semantic meaning</td>
+        <td>&ldquo;CO&sub2; is the dominant anthropogenic forcing agent&rdquo;</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
 
 <section class="structure-section">
   <h2>Composite Formula</h2>
   <div class="formula-box">
-    Q(G) = Comp<sub>gate</sub> &times; [ 0.20 &times; Align + 0.30 &times; WStr + 0.30 &times; SRel + 0.20 &times; CBudget ] / 5
+    Q = (Align + WStr + SRel) / 3
   </div>
   <p style="font-size:0.9rem; color:var(--text-light); margin-top:10px;">
-    <strong>Comp<sub>gate</sub>:</strong> If Completeness &le; 2, multiply final score by 0.5 (penalty for incomplete Toulmin structure). Otherwise Comp<sub>gate</sub> = Comp raw score.<br>
-    <strong>WStr and SRel</strong> are weighted 0.30 each because they capture the uniquely multimodal dimensions of argument quality.<br>
-    The denominator of 5 normalizes the result to a 0&ndash;5 scale.
+    All three dimensions are equally weighted. The composite score Q ranges from 1 to 5.<br>
+    <strong>Each dimension measures a specific alignment within the L1&ndash;L4 hierarchy</strong>, as shown in the rubric table below.
   </p>
 </section>
 
 <section class="structure-section">
-  <h2>Dimension Descriptions</h2>
+  <h2>Dimension Rubric</h2>
   <table class="rubric-table" id="rubric-table">
     <thead>
       <tr>
         <th>Dimension</th>
+        <th>L1&ndash;L4 Alignment</th>
         <th>Score 1 (Poor)</th>
         <th>Score 2 (Weak)</th>
         <th>Score 3 (Adequate)</th>
         <th>Score 4 (Strong)</th>
         <th>Score 5 (Excellent)</th>
-        <th>Weight</th>
       </tr>
     </thead>
     <tbody id="rubric-body"></tbody>
@@ -51,28 +84,18 @@
   <h2>Dimension Details</h2>
 
   <div style="margin-bottom:20px;">
-    <h3>Comp (Completeness)</h3>
-    <p style="font-size:0.9rem;">Measures how many of the six Toulmin components (Claim, Evidence, Warrant, Backing, Qualifier, Rebuttal) are identifiable in the visualization&ndash;caption pair. This acts as a gate: incomplete arguments receive a penalty multiplier. A chart that only encodes a claim and evidence but lacks any recoverable warrant scores low, regardless of how well-designed it is.</p>
+    <h3>Align (Claim&ndash;Evidence Alignment) &mdash; L2 &harr; L4</h3>
+    <p style="font-size:0.9rem;">Assesses whether the statistical and relational patterns visible in the chart (L2) directly depict the high-level claim stated in the caption (L4). Perfect alignment means the chart is the canonical visual depiction of the stated claim&mdash;for instance, a claim about &ldquo;diverging trends&rdquo; paired with clearly diverging lines. Misalignment means the chart shows something tangential to or different from the claim.</p>
   </div>
 
   <div style="margin-bottom:20px;">
-    <h3>Align (Claim-Evidence Alignment)</h3>
-    <p style="font-size:0.9rem;">Assesses the semantic match between the textual claim in the caption and the visual evidence in the chart. Perfect alignment means the chart is the canonical visual depiction of the stated claim&mdash;for instance, a claim about &ldquo;diverging trends&rdquo; paired with clearly diverging lines. Misalignment means the chart shows something tangential to or different from the claim.</p>
+    <h3>WStr (Warrant Strength) &mdash; L1 &rarr; L2 &rarr; L3 &rarr; L4 chain</h3>
+    <p style="font-size:0.9rem;">Evaluates the coherence and recoverability of the full cross-modal reasoning chain from chart structure (L1) through statistical patterns (L2) and perceptual salience (L3) to the semantic claim (L4). Strong warrants allow the reader to readily articulate <em>why</em> the evidence supports the claim&mdash;the inferential step from seen pattern to stated proposition becomes easy to reconstruct. Weak warrants leave the reasoning opaque or require speculative leaps.</p>
   </div>
 
   <div style="margin-bottom:20px;">
-    <h3>WStr (Warrant Strength)</h3>
-    <p style="font-size:0.9rem;">Evaluates the quality of the cross-modal reasoning link that connects visual evidence to the textual claim. This is the uniquely multimodal bridge: how does the reader infer the claim from what they see? Strong warrants involve explicit, scheme-appropriate reasoning (e.g., comparative warrant for threshold-crossing claims). Weak warrants are speculative or logically unsound.</p>
-  </div>
-
-  <div style="margin-bottom:20px;">
-    <h3>SRel (Salience-Relevance Match)</h3>
-    <p style="font-size:0.9rem;">Measures whether the most visually salient features in the chart are also the most argumentatively relevant. A high score means the chart&rsquo;s design naturally directs attention to the evidence supporting the claim (e.g., color-coding the key comparison). Low scores indicate visual distractors that compete with or suppress the relevant evidence.</p>
-  </div>
-
-  <div style="margin-bottom:20px;">
-    <h3>CBudget (Complexity Budget)</h3>
-    <p style="font-size:0.9rem;">Assesses how well the chart manages visual complexity relative to the argument&rsquo;s demands. Charts with high information density can score well if they provide scaffolding (annotations, labels, visual grouping) that guides the reader. Overwhelming charts with no guidance score poorly. Simple charts that are immediately graspable score highest.</p>
+    <h3>SRel (Salience&ndash;Relevance Match) &mdash; L3 &harr; L4</h3>
+    <p style="font-size:0.9rem;">Measures whether the most perceptually salient features of the chart (L3) are also the most argumentatively relevant to the claim (L4). A high score means the chart&rsquo;s design naturally directs attention to the evidence supporting the claim (e.g., color-coding the key comparison). Low scores indicate visual distractors that compete with or suppress the relevant evidence.</p>
   </div>
 </section>
 
@@ -81,15 +104,15 @@
   <div class="tier-dist">
     <div class="tier-dist-item" style="background:var(--tier-top-bg); border:1px solid var(--tier-top);">
       <div class="tier-dist-num" style="color:var(--tier-top);">Top</div>
-      <div class="tier-dist-label">Q(G) &ge; 3.5</div>
+      <div class="tier-dist-label">Q &ge; 4.0</div>
     </div>
     <div class="tier-dist-item" style="background:var(--tier-mid-bg); border:1px solid var(--tier-mid);">
       <div class="tier-dist-num" style="color:var(--tier-mid);">Mid</div>
-      <div class="tier-dist-label">2.5 &le; Q(G) &lt; 3.5</div>
+      <div class="tier-dist-label">3.0 &le; Q &lt; 4.0</div>
     </div>
     <div class="tier-dist-item" style="background:var(--tier-bot-bg); border:1px solid var(--tier-bot);">
       <div class="tier-dist-num" style="color:var(--tier-bot);">Bottom</div>
-      <div class="tier-dist-label">Q(G) &lt; 2.5</div>
+      <div class="tier-dist-label">Q &lt; 3.0</div>
     </div>
   </div>
 </section>
@@ -98,18 +121,16 @@
 <script>
 (function() {
   const body = document.getElementById('rubric-body');
-  // Skip the last row (Composite formula)
-  const dims = RUBRIC.filter(r => r.Dimension !== 'Composite Q(G)');
-  dims.forEach(r => {
+  RUBRIC.forEach(r => {
     const tr = document.createElement('tr');
     tr.innerHTML = `
-      <td>${r.Dimension}</td>
-      <td>${r['Score 1 (Poor)']}</td>
-      <td>${r['Score 2 (Weak)']}</td>
-      <td>${r['Score 3 (Adequate)']}</td>
-      <td>${r['Score 4 (Strong)']}</td>
-      <td>${r['Score 5 (Excellent)']}</td>
-      <td style="text-align:center; font-weight:600;">${r.Weight}</td>`;
+      <td><strong>${r.Dimension}</strong></td>
+      <td style="text-align:center; font-family:monospace; font-size:0.85rem;">${r.L1L4}</td>
+      <td>${r['Score 1']}</td>
+      <td>${r['Score 2']}</td>
+      <td>${r['Score 3']}</td>
+      <td>${r['Score 4']}</td>
+      <td>${r['Score 5']}</td>`;
     body.appendChild(tr);
   });
 })();

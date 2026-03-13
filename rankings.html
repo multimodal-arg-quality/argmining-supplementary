@@ -14,7 +14,7 @@
 
 <header class="chart-header">
   <h1>Quality Rankings</h1>
-  <p style="color:var(--text-light); margin-top:8px;">All 30 charts ranked by composite quality score Q(G). Click column headers to sort.</p>
+  <p style="color:var(--text-light); margin-top:8px;">All 50 charts ranked by composite quality score Q = (Align + WStr + SRel) / 3. Click column headers to sort.</p>
 </header>
 
 <section>
@@ -31,14 +31,11 @@
         <th data-col="rank" data-type="num">Rank <span class="sort-arrow"></span></th>
         <th data-col="id" data-type="num">Chart <span class="sort-arrow"></span></th>
         <th data-col="domain" data-type="str">Domain <span class="sort-arrow"></span></th>
-        <th data-col="mag" data-type="str">MAG <span class="sort-arrow"></span></th>
         <th data-col="chartType" data-type="str">Type <span class="sort-arrow"></span></th>
-        <th data-col="comp" data-type="num" class="num">Comp <span class="sort-arrow"></span></th>
         <th data-col="align" data-type="num" class="num">Align <span class="sort-arrow"></span></th>
         <th data-col="wStr" data-type="num" class="num">WStr <span class="sort-arrow"></span></th>
         <th data-col="sRel" data-type="num" class="num">SRel <span class="sort-arrow"></span></th>
-        <th data-col="cBudget" data-type="num" class="num">CBudget <span class="sort-arrow"></span></th>
-        <th data-col="qG" data-type="num" class="num">Q(G) <span class="sort-arrow"></span></th>
+        <th data-col="Q" data-type="num" class="num">Q <span class="sort-arrow"></span></th>
         <th data-col="tier" data-type="str">Tier <span class="sort-arrow"></span></th>
       </tr>
     </thead>
@@ -54,10 +51,9 @@
   let currentSort = 'rank';
   let currentDir = 'asc';
 
-  // Tier summary
   const tiers = { Top: 0, Mid: 0, Bottom: 0 };
   const qValues = [];
-  data.forEach(c => { tiers[c.tier]++; qValues.push(c.scores.qG); });
+  data.forEach(c => { tiers[c.tier]++; qValues.push(c.scores.Q); });
   const tierEl = document.getElementById('tier-summary');
   const tierColors = { Top: 'var(--tier-top)', Mid: 'var(--tier-mid)', Bottom: 'var(--tier-bot)' };
   const tierBg = { Top: 'var(--tier-top-bg)', Mid: 'var(--tier-mid-bg)', Bottom: 'var(--tier-bot-bg)' };
@@ -66,14 +62,19 @@
       <div class="tier-dist-num" style="color:${tierColors[t]}">${tiers[t]}</div><div class="tier-dist-label">${t} Tier</div></div>`;
   });
 
-  // Stats
   const mean = (qValues.reduce((s,v) => s+v, 0) / qValues.length).toFixed(2);
   const sorted = [...qValues].sort((a,b) => a-b);
   const median = sorted.length % 2 === 0 ? ((sorted[sorted.length/2-1] + sorted[sorted.length/2]) / 2).toFixed(2) : sorted[Math.floor(sorted.length/2)].toFixed(2);
-  const min = Math.min(...qValues).toFixed(2);
-  const max = Math.max(...qValues).toFixed(2);
   document.getElementById('score-stats').innerHTML =
-    `Mean: <strong>${mean}</strong> &middot; Median: <strong>${median}</strong> &middot; Range: <strong>${min}&ndash;${max}</strong>`;
+    `Mean: <strong>${mean}</strong> &middot; Median: <strong>${median}</strong> &middot; Range: <strong>${Math.min(...qValues).toFixed(2)}&ndash;${Math.max(...qValues).toFixed(2)}</strong>`;
+
+  function scoreColor(val) {
+    if (val >= 5) return '#27ae60';
+    if (val >= 4) return '#82cc6e';
+    if (val >= 3) return '#f1c40f';
+    if (val >= 2) return '#e67e22';
+    return '#c0392b';
+  }
 
   function renderTable() {
     tbody.innerHTML = '';
@@ -85,57 +86,44 @@
         <td class="num">${c.rank}</td>
         <td class="num"><a href="charts/${c.id}.html">${c.id}</a></td>
         <td>${c.domain}</td>
-        <td>${c.mag}</td>
         <td>${c.chartType}</td>
-        <td class="num">${c.scores.comp.toFixed(1)}</td>
-        <td class="num">${c.scores.align.toFixed(1)}</td>
-        <td class="num">${c.scores.wStr.toFixed(1)}</td>
-        <td class="num">${c.scores.sRel.toFixed(1)}</td>
-        <td class="num">${c.scores.cBudget.toFixed(1)}</td>
-        <td class="num" style="font-weight:700;">${c.scores.qG.toFixed(2)}</td>
+        <td class="num" style="background:${scoreColor(c.scores.align)}22; color:${scoreColor(c.scores.align)}">${c.scores.align}</td>
+        <td class="num" style="background:${scoreColor(c.scores.wStr)}22; color:${scoreColor(c.scores.wStr)}">${c.scores.wStr}</td>
+        <td class="num" style="background:${scoreColor(c.scores.sRel)}22; color:${scoreColor(c.scores.sRel)}">${c.scores.sRel}</td>
+        <td class="num" style="font-weight:700;">${c.scores.Q.toFixed(2)}</td>
         <td><span class="badge badge-tier-${c.tier}">${c.tier}</span></td>`;
       tbody.appendChild(tr);
     });
   }
 
-  // Sortable headers
   document.querySelectorAll('#rankings-table thead th').forEach(th => {
     th.addEventListener('click', () => {
       const col = th.dataset.col;
       const type = th.dataset.type;
       if (!col) return;
-
       if (currentSort === col) {
         currentDir = currentDir === 'asc' ? 'desc' : 'asc';
       } else {
         currentSort = col;
         currentDir = 'asc';
       }
-
       data.sort((a,b) => {
         let va, vb;
-        if (['comp','align','wStr','sRel','cBudget','qG'].includes(col)) {
+        if (['align','wStr','sRel','Q'].includes(col)) {
           va = a.scores[col]; vb = b.scores[col];
         } else {
           va = a[col]; vb = b[col];
         }
-        if (type === 'num') {
-          return currentDir === 'asc' ? va - vb : vb - va;
-        } else {
-          return currentDir === 'asc' ? String(va).localeCompare(String(vb)) : String(vb).localeCompare(String(va));
-        }
+        if (type === 'num') return currentDir === 'asc' ? va - vb : vb - va;
+        return currentDir === 'asc' ? String(va).localeCompare(String(vb)) : String(vb).localeCompare(String(va));
       });
-
-      // Update arrows
       document.querySelectorAll('#rankings-table .sort-arrow').forEach(a => a.textContent = '');
-      th.querySelector('.sort-arrow').textContent = currentDir === 'asc' ? ' ▲' : ' ▼';
-
+      th.querySelector('.sort-arrow').textContent = currentDir === 'asc' ? ' \u25B2' : ' \u25BC';
       renderTable();
     });
   });
 
-  // Initial sort arrow
-  document.querySelector('th[data-col="rank"] .sort-arrow').textContent = ' ▲';
+  document.querySelector('th[data-col="rank"] .sort-arrow').textContent = ' \u25B2';
   renderTable();
 })();
 </script>
